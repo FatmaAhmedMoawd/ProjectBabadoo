@@ -63,7 +63,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50/50 p-6 relative py-12">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50/50 p-6 relative py-12 overflow-hidden">
       {/* Decorative Background Elements */}
       <motion.div 
         animate={{ 
@@ -97,7 +97,7 @@ export const LoginPage: React.FC = () => {
           
           <div className="text-center mb-10">
             <h1 className="text-3xl font-black text-brand-dark font-cairo mb-2">
-              {isRTL ? "تسجيل الدخول" : "Login"}
+              {t("nav.login")}
             </h1>
             <p className="text-gray-500 font-cairo font-medium">
               {getGreeting()}
@@ -120,7 +120,8 @@ export const LoginPage: React.FC = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
                   className={cn(
-                    "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm font-medium",
+                    "w-full border rounded-[20px] p-4 ps-14 outline-none transition-all duration-300 shadow-sm font-medium",
+                    isRTL && "ps-4 pe-14",
                     errors.email 
                       ? "border-red-200 bg-red-50/30 focus:border-red-400" 
                       : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
@@ -167,7 +168,8 @@ export const LoginPage: React.FC = () => {
                   onKeyDown={checkCapsLock}
                   placeholder="••••••••"
                   className={cn(
-                    "w-full border rounded-[20px] p-4 ps-12 pe-12 outline-none transition-all duration-300 shadow-sm font-medium",
+                    "w-full border rounded-[20px] p-4 ps-14 pe-12 outline-none transition-all duration-300 shadow-sm font-medium",
+                    isRTL && "ps-4 pe-14",
                     errors.password 
                       ? "border-red-200 bg-red-50/30 focus:border-red-400" 
                       : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"

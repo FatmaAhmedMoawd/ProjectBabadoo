@@ -169,6 +169,14 @@ export const ar = {
     supportTeam: "فريق الدعم لدينا هنا للمساعدة",
     contactSupport: "اتصل بالدعم",
   },
+  auth: {
+    welcomeBack: "مرحباً بك مجدداً في بابادو",
+    goodMorning: "صباح الخير! مرحباً بعودتك",
+    goodAfternoon: "مساء الخير! مرحباً بعودتك",
+    goodEvening: "مساء سعيد! مرحباً بعودتك",
+    secureLogin: "تسجيل دخول آمن 256-bit",
+    capsLockOn: "زر الحروف الكبيرة مفعل",
+  },
   footer: {
     rights: "© 2026 Babadoo",
     contact: "تواصل معنا",

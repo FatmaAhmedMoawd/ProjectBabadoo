@@ -7,9 +7,6 @@ export const en = {
     join: "Join as a Brand",
     getStarted: "Get Started Now",
     login: "Login",
-    goodMorning: "Good morning! Welcome back",
-    goodAfternoon: "Good afternoon! Welcome back",
-    goodEvening: "Good evening! Welcome back",
     partnerRegister: "Partner Register",
     faq: "FAQ",
   },
@@ -83,10 +80,6 @@ export const en = {
     continue: "Continue",
   },
   partner: {
-    welcomeBack: "Welcome back to Babbadoo",
-    goodMorning: "Good morning! Welcome back",
-    goodAfternoon: "Good afternoon! Welcome back",
-    goodEvening: "Good evening! Welcome back",
     heroTitle_1: "Partner with Babbado",
     heroTitle_2: "Grow Your Business",
     heroSubtitle:

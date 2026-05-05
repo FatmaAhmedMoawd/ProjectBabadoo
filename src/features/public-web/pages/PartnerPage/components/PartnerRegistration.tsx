@@ -294,7 +294,7 @@ export const PartnerRegistration: React.FC = () => {
                       onBlur={handleBlur}
                       placeholder={t("partner.brandNamePlaceholder")}
                       className={cn(
-                        "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                        "w-full border rounded-[20px] p-4 ps-14 outline-none transition-all duration-300 shadow-sm",
                         errors.brandName 
                           ? "border-red-200 bg-red-50/30 focus:border-red-400" 
                           : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
@@ -319,7 +319,7 @@ export const PartnerRegistration: React.FC = () => {
                         onBlur={handleBlur}
                         placeholder={t("partner.firstNamePlaceholder")}
                         className={cn(
-                          "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                          "w-full border rounded-[20px] p-4 ps-14 outline-none transition-all duration-300 shadow-sm",
                           errors.firstName 
                             ? "border-red-200 bg-red-50/30 focus:border-red-400" 
                             : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
@@ -342,7 +342,7 @@ export const PartnerRegistration: React.FC = () => {
                         onBlur={handleBlur}
                         placeholder={t("partner.lastNamePlaceholder")}
                         className={cn(
-                          "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                          "w-full border rounded-[20px] p-4 ps-14 outline-none transition-all duration-300 shadow-sm",
                           errors.lastName 
                             ? "border-red-200 bg-red-50/30 focus:border-red-400" 
                             : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
@@ -367,7 +367,8 @@ export const PartnerRegistration: React.FC = () => {
                       onBlur={handleBlur}
                       placeholder="example@gmail.com"
                       className={cn(
-                        "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                        "w-full border rounded-[20px] p-4 ps-14 outline-none transition-all duration-300 shadow-sm",
+                        isRTL && "ps-4 pe-14",
                         isRTL ? "text-right" : "text-left",
                         errors.email 
                           ? "border-red-200 bg-red-50/30 focus:border-red-400" 
@@ -393,7 +394,8 @@ export const PartnerRegistration: React.FC = () => {
                       onBlur={handleBlur}
                       placeholder="01012345678"
                       className={cn(
-                        "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                        "w-full border rounded-[20px] p-4 ps-14 outline-none transition-all duration-300 shadow-sm",
+                        isRTL && "ps-4 pe-14",
                         isRTL ? "text-right" : "text-left",
                         errors.phone 
                           ? "border-red-200 bg-red-50/30 focus:border-red-400" 
@@ -511,7 +513,8 @@ export const PartnerRegistration: React.FC = () => {
                       onChange={handleInputChange}
                       placeholder={t("partner.bizPhonePlaceholder")}
                       className={cn(
-                        "w-full border border-gray-200 rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5 shadow-sm",
+                        "w-full border border-gray-200 rounded-[20px] p-4 ps-14 outline-none transition-all duration-300 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5 shadow-sm",
+                        isRTL && "ps-4 pe-14",
                         isRTL ? "text-right" : "text-left"
                       )}
                       dir="ltr"
