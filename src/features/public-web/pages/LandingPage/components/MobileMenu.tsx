@@ -65,14 +65,14 @@ export const MobileMenu = React.memo(({ isOpen, onClose }: MobileMenuProps) => {
             className="fixed inset-0 bg-brand-dark/40 backdrop-blur-sm z-[100] lg:hidden touch-none"
           />
           <motion.div
-            initial={{ x: "100%" }}
+            initial={{ x: isRTL ? "-100%" : "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
+            exit={{ x: isRTL ? "-100%" : "100%" }}
             transition={{ type: "spring", damping: 35, stiffness: 200, mass: 1 }}
             style={{ willChange: "transform" }}
             className={cn(
               "fixed inset-y-0 end-0 w-[300px] bg-white z-[101] lg:hidden flex flex-col p-8 shadow-2xl border-s border-gray-100",
-              isRTL ? "rounded-r-none rounded-l-[40px]" : "rounded-l-[40px] rounded-r-none"
+              isRTL ? "rounded-l-none rounded-r-[40px] border-s-0 border-e" : "rounded-r-none rounded-l-[40px]"
             )}
           >
             <div className="flex items-center justify-between mb-10 w-full">
@@ -108,8 +108,8 @@ export const MobileMenu = React.memo(({ isOpen, onClose }: MobileMenuProps) => {
 
             <div className="mt-auto space-y-3">
               <Button
-                variant="secondary"
-                className="w-full h-14 rounded-2xl bg-brand-brown text-white font-bold font-cairo text-lg shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                variant="primary"
+                className="w-full h-14 rounded-2xl font-bold font-cairo text-lg shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
               >
                 <Download className="w-5 h-5" />
                 <span>{t("nav.download")}</span>

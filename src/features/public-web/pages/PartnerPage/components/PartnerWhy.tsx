@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Gift, Percent, CircleDollarSign } from "lucide-react";
+import { useRTL } from "@/shared/hooks/useRTL";
 
 export const PartnerWhy: React.FC = () => {
   const { t } = useTranslation();
+  const { isRTL } = useRTL();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const reasons = [
     {
@@ -30,7 +33,7 @@ export const PartnerWhy: React.FC = () => {
   ];
 
   return (
-    <section id="why" className="py-24 bg-white">
+    <section id="why" className="py-24 bg-white overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="text-4xl md:text-5xl font-bold text-brand-dark font-cairo mb-4">
@@ -44,6 +47,8 @@ export const PartnerWhy: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {reasons.map((reason, idx) => {
             const Icon = reason.icon;
+            const isActive = activeIndex === idx;
+
             return (
               <motion.div
                 key={idx}
@@ -56,20 +61,40 @@ export const PartnerWhy: React.FC = () => {
                   stiffness: 80,
                   damping: 15,
                 }}
-                whileHover={{ 
-                  y: -12, 
-                  scale: 1.02,
-                  boxShadow: "0 20px 40px -10px rgba(211, 136, 66, 0.15)"
-                }}
-                className="bg-white rounded-[40px] p-10 flex flex-col items-center text-center shadow-md border-2 border-gray-200 hover:border-[#D38842]/40 transition-all duration-500 group"
+                onClick={() => setActiveIndex(isActive ? null : idx)}
+                className={`bg-white rounded-[40px] p-10 flex flex-col items-center text-center shadow-md border-2 transition-all duration-500 group relative overflow-hidden cursor-pointer ${
+                  isActive ? "border-brand-brown" : "border-gray-200"
+                }`}
               >
-                <div className="w-20 h-20 rounded-3xl bg-gray-50 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-[#D38842] transition-all duration-500 shadow-sm">
-                  <Icon className="w-10 h-10 text-gray-700 group-hover:text-white transition-colors duration-500" />
+                {/* Active Background Animation */}
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.div
+                      initial={{ x: isRTL ? "-100%" : "100%" }}
+                      animate={{ x: 0 }}
+                      exit={{ x: isRTL ? "100%" : "-100%" }}
+                      transition={{ type: "tween", duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute inset-0 bg-brand-brown/5 pointer-events-none z-0"
+                    />
+                  )}
+                </AnimatePresence>
+
+                <div className={`w-20 h-20 rounded-3xl flex items-center justify-center mb-8 transition-all duration-500 shadow-sm relative z-10 ${
+                  isActive ? "bg-brand-brown scale-110" : "bg-brand-brown/10"
+                }`}>
+                  <Icon className={`w-10 h-10 transition-colors duration-500 ${
+                    isActive ? "text-white" : "text-brand-brown"
+                  }`} />
                 </div>
-                <h3 className="text-2xl font-bold text-brand-dark font-cairo mb-4">
+
+                <h3 className={`text-2xl font-bold font-cairo mb-4 relative z-10 transition-colors ${
+                  isActive ? "text-brand-brown" : "text-brand-dark"
+                }`}>
                   {reason.title}
                 </h3>
-                <p className="text-gray-600 font-cairo text-lg leading-relaxed max-w-[280px]">
+                <p className={`font-cairo text-lg leading-relaxed max-w-[280px] relative z-10 transition-colors ${
+                  isActive ? "text-brand-dark" : "text-gray-600"
+                }`}>
                   {reason.desc}
                 </p>
               </motion.div>

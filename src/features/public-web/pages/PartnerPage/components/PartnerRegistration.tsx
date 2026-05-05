@@ -5,12 +5,8 @@ import { Button } from "@/shared/ui/Common";
 import { Upload, ChevronDown, Phone, Check, Utensils, ShoppingBag, UserCircle, Store, Coffee, Pizza, Home, ShoppingCart, Laptop, Pill, Heart, Flower2 } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { AnimatePresence } from "framer-motion";
-import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
 
 import { useRTL } from "@/shared/hooks/useRTL";
-
-const libraries: ("places" | "drawing" | "geometry" | "visualization")[] = ["places"];
-const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY_HERE"; // ارفع مفتاح الخريطة هنا
 
 export const PartnerRegistration: React.FC = () => {
   const { t } = useTranslation();
@@ -223,50 +219,6 @@ export const PartnerRegistration: React.FC = () => {
     }
   };
 
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-    libraries
-  });
-
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-
-  const onAutocompleteLoad = (autocompleteInstance: google.maps.places.Autocomplete) => {
-    setAutocomplete(autocompleteInstance);
-  };
-
-  const onPlaceChanged = () => {
-    if (autocomplete !== null) {
-      const place = autocomplete.getPlace();
-      if (place.geometry && place.geometry.location) {
-        const newLat = place.geometry.location.lat();
-        const newLng = place.geometry.location.lng();
-        const newAddress = place.formatted_address || "";
-        
-        setFormData(prev => ({ 
-          ...prev, 
-          lat: newLat, 
-          lng: newLng,
-          address: newAddress 
-        }));
-
-        if (map) {
-          map.panTo({ lat: newLat, lng: newLng });
-          map.setZoom(16);
-        }
-      }
-    }
-  };
-
-  const onMapClick = (e: google.maps.MapMouseEvent) => {
-    if (e.latLng) {
-      const newLat = e.latLng.lat();
-      const newLng = e.latLng.lng();
-      setFormData(prev => ({ ...prev, lat: newLat, lng: newLng }));
-    }
-  };
-
   return (
     <section id="registration" className="py-24 bg-white relative scroll-mt-24">
       <div className="container mx-auto px-6 max-w-5xl">
@@ -459,10 +411,13 @@ export const PartnerRegistration: React.FC = () => {
 
                 <div className="pt-6 flex justify-center">
                   <Button
-                    variant="secondary"
+                    variant="primary"
                     onClick={handleNextStep}
                     disabled={!isFormValid()}
-                    className={`px-12 py-3.5 text-lg font-bold w-full md:w-auto mt-4 rounded-lg border-none shadow-md font-cairo transition-all ${isFormValid() ? "bg-[#C48033] hover:bg-[#A36A29] text-white cursor-pointer" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                    className={cn(
+                      "px-12 py-3.5 text-lg font-bold w-full md:w-auto mt-4 rounded-lg border-none shadow-md font-cairo transition-all",
+                      isFormValid() ? "bg-[#C48033] hover:bg-[#A36A29] text-white cursor-pointer" : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    )}
                   >
                     {t("partner.nextStep")}
                   </Button>
@@ -603,7 +558,7 @@ export const PartnerRegistration: React.FC = () => {
                     {t("partner.back")}
                   </Button>
                   <Button
-                    variant="secondary"
+                    variant="primary"
                     onClick={() => setStep(3)}
                     className="flex-1 w-full bg-[#C48033] hover:bg-[#A36A29] text-white py-3.5 font-bold rounded-lg border-none shadow-md font-cairo transition-all"
                   >
@@ -620,29 +575,12 @@ export const PartnerRegistration: React.FC = () => {
                 className="space-y-8 text-start"
               >
                 <div className="space-y-3">
-                  <label className="block font-bold text-sm text-gray-800">
-                    {t("partner.bizLocation")}
-                  </label>
-                  <div className="h-[250px] w-full bg-gray-100 rounded-2xl overflow-hidden relative border border-gray-200 shadow-sm">
-                    {isLoaded ? (
-                      <GoogleMap
-                        mapContainerStyle={{ width: '100%', height: '100%' }}
-                        center={{ lat: formData.lat, lng: formData.lng }}
-                        zoom={15}
-                        onLoad={m => setMap(m)}
-                        onClick={onMapClick}
-                        options={{
-                          disableDefaultUI: true,
-                          zoomControl: true,
-                        }}
-                      >
-                        <Marker position={{ lat: formData.lat, lng: formData.lng }} />
-                      </GoogleMap>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400 font-medium">
-                        جاري تحميل الخريطة...
-                      </div>
-                    )}
+                  <div className="h-[220px] w-full bg-gray-200 rounded-2xl overflow-hidden relative border border-gray-200 shadow-sm">
+                    <img
+                      src="https://i.postimg.cc/3Nhd0SY0/Google-map-svg.jpg"
+                      alt="Map Placeholder"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
 
@@ -650,27 +588,14 @@ export const PartnerRegistration: React.FC = () => {
                   <label className="block font-bold text-sm text-gray-800">
                     {t("partner.fullAddress")}
                   </label>
-                  {isLoaded ? (
-                    <Autocomplete
-                      onLoad={onAutocompleteLoad}
-                      onPlaceChanged={onPlaceChanged}
-                    >
-                      <input
-                        type="text"
-                        placeholder={t("partner.fullAddressPlaceholder")}
-                        value={formData.address}
-                        onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                        className="w-full border border-gray-300 rounded-xl p-4 outline-none focus:border-[#D38842] shadow-sm transition-all"
-                      />
-                    </Autocomplete>
-                  ) : (
-                    <input
-                      type="text"
-                      placeholder={t("partner.fullAddressPlaceholder")}
-                      className="w-full border border-gray-300 rounded-xl p-4 outline-none bg-gray-50"
-                      disabled
-                    />
-                  )}
+                  <textarea
+                    rows={3}
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    placeholder={t("partner.fullAddressPlaceholder")}
+                    className="w-full border border-gray-300 rounded-xl p-4 outline-none focus:border-[#D38842] resize-none"
+                  ></textarea>
                 </div>
 
                 <div className="space-y-3">
@@ -709,7 +634,7 @@ export const PartnerRegistration: React.FC = () => {
                     {t("partner.back")}
                   </Button>
                   <Button
-                    variant="secondary"
+                    variant="primary"
                     className="flex-1 w-full bg-[#C48033] hover:bg-[#A36A29] text-white py-3.5 font-bold rounded-xl border-none shadow-lg shadow-[#C48033]/20 font-cairo transition-all"
                   >
                     {t("partner.submit")}

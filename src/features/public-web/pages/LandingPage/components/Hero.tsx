@@ -11,6 +11,31 @@ const HERO_IMAGES = [
   "https://i.postimg.cc/vBM9FHks/Browse-Reserve.png",
 ];
 
+const AnimatedWaves: React.FC = () => {
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <svg
+        className="absolute bottom-0 left-0 w-[200%] h-[40%] transform translate-z-0 opacity-10"
+        viewBox="0 0 1000 100"
+        preserveAspectRatio="none"
+      >
+        <motion.path
+          d="M0 50 C 150 70, 350 30, 500 50 C 650 70, 850 30, 1000 50 L 1000 100 L 0 100 Z"
+          fill="rgba(255, 255, 255, 0.4)"
+          animate={{
+            x: [0, -500],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </svg>
+    </div>
+  );
+};
+
 export const Hero: React.FC = () => {
   const { t } = useTranslation();
   const [currentImage, setCurrentImage] = useState(0);
@@ -23,7 +48,8 @@ export const Hero: React.FC = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center pt-48 md:pt-32 pb-20 overflow-hidden bg-brand-brown">
+    <section className="relative min-h-[100svh] flex items-center pt-48 md:pt-32 pb-20 overflow-hidden bg-brand-brown bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.05),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(0,0,0,0.1),transparent_40%)]">
+      <AnimatedWaves />
       <div className="container mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-x-16 items-center">
         <motion.div
           initial={{ opacity: 0 }}
