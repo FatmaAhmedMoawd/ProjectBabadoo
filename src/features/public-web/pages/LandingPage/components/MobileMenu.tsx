@@ -12,7 +12,7 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+export const MobileMenu = React.memo(({ isOpen, onClose }: MobileMenuProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const isPartnerPage = location.pathname === "/partner";
@@ -21,7 +21,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      // Additional fixes for iOS Safari
       document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -35,8 +34,24 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
 
   const scrollTo = (id: string) => {
     onClose();
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    // Use requestAnimationFrame for smoother transition after closing
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    });
   };
+
+  const menuItems = isPartnerPage
+    ? [
+        { label: t("nav.howItWorks"), id: "how-it-works" },
+        { label: t("nav.partnerRegister"), id: "registration" },
+        { label: t("nav.faq"), id: "faq" },
+        { label: t("nav.features"), id: "why" },
+      ]
+    : [
+        { label: t("nav.features"), id: "features" },
+        { label: t("nav.howItWorks"), id: "how-it-works" },
+        { label: t("nav.contact"), id: "contact" },
+      ];
 
   return (
     <AnimatePresence>
@@ -47,110 +62,85 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-brand-dark/20 backdrop-blur-md z-[100] lg:hidden touch-none"
+            className="fixed inset-0 bg-brand-dark/40 backdrop-blur-sm z-[100] lg:hidden touch-none"
           />
           <motion.div
-            initial={{ x: offset(100) + "%" }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: offset(100) + "%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 end-0 w-[300px] bg-white/95 backdrop-blur-xl z-[101] lg:hidden flex flex-col p-8 shadow-2xl rounded-s-[40px] border-s border-white/20"
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 35, stiffness: 200, mass: 1 }}
+            style={{ willChange: "transform" }}
+            className={cn(
+              "fixed inset-y-0 end-0 w-[300px] bg-white z-[101] lg:hidden flex flex-col p-8 shadow-2xl border-s border-gray-100",
+              isRTL ? "rounded-r-none rounded-l-[40px]" : "rounded-l-[40px] rounded-r-none"
+            )}
           >
-            <div
-              className="flex items-center justify-between mb-12 w-full"
-              dir={isRTL ? "rtl" : "ltr"}
-            >
+            <div className="flex items-center justify-between mb-10 w-full">
               <button
                 onClick={onClose}
-                aria-label={t("nav.closeMenu", "Close menu")}
-                className="w-10 h-10 flex flex-col items-center justify-center text-brand-dark bg-gray-100 hover:bg-gray-200 rounded-xl transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-brown focus-visible:ring-offset-2 shrink-0 gap-[4px]"
+                className="w-10 h-10 flex flex-col items-center justify-center text-brand-dark bg-gray-50 hover:bg-gray-100 rounded-xl transition-all active:scale-95 gap-[4px]"
               >
-                <span className="w-5 h-[2px] bg-brand-dark rotate-45 translate-y-[3px] rounded-full" />
-                <span className="w-5 h-[2px] bg-brand-dark -rotate-45 -translate-y-[3px] rounded-full" />
+                <X className="w-6 h-6" />
               </button>
               <Logo
                 variant="horizontal"
-                className="brightness-0 opacity-90 [&>img]:!h-[32px] sm:[&>img]:!h-[38px] [&>img]:!scale-100 shrink-0 object-right rtl:object-left"
+                className="brightness-0 opacity-90 [&>img]:!h-[32px] shrink-0"
               />
             </div>
-            <nav className="flex flex-col gap-4 overflow-y-auto max-h-[60vh] pr-2 pb-12 custom-scrollbar">
-              {(isPartnerPage
-                ? [
-                    { label: t("nav.howItWorks"), id: "how-it-works" },
-                    { label: t("nav.partnerRegister"), id: "registration" },
-                    { label: t("nav.faq"), id: "faq" },
-                    { label: t("nav.features"), id: "why" },
-                  ]
-                : [
-                    { label: t("nav.features"), id: "features" },
-                    { label: t("nav.howItWorks"), id: "how-it-works" },
-                    { label: t("nav.contact"), id: "contact" },
-                  ]
-              ).map((item, i) => (
-                <motion.button
-                  initial={{ opacity: 0, x: offset(30) }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15 + i * 0.08, ease: "easeOut" }}
+
+            <nav className="flex flex-col gap-3 overflow-y-auto max-h-[65vh] pr-1 pb-8 custom-scrollbar">
+              {menuItems.map((item, i) => (
+                <button
                   key={item.id}
                   onClick={() => scrollTo(item.id)}
-                  className="text-brand-dark text-lg font-bold font-cairo text-start bg-white border border-gray-200 shadow-sm rounded-2xl p-4 hover:border-[#D38842]/30 hover:bg-gray-50/50 transition-all flex items-center justify-between group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D38842]"
+                  className="text-brand-dark text-lg font-bold font-cairo text-start bg-white border border-gray-100 rounded-2xl p-4 hover:border-brand-brown/30 hover:bg-gray-50 transition-all flex items-center justify-between group"
                 >
                   <span>{item.label}</span>
                   <ChevronRight
                     className={cn(
-                      "w-4 h-4 text-[#D38842] transition-transform group-hover:translate-x-1",
+                      "w-4 h-4 text-brand-brown transition-transform group-hover:translate-x-1",
                       isRTL && "rotate-180 group-hover:-translate-x-1",
                     )}
                   />
-                </motion.button>
+                </button>
               ))}
             </nav>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}
-              className="mt-auto space-y-4"
-            >
+            <div className="mt-auto space-y-3">
               <Button
                 variant="secondary"
-                className="w-full h-16 rounded-2xl bg-white border border-gray-200 text-brand-dark font-bold font-cairo text-lg shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-3 hover:bg-gray-50 group overflow-hidden relative"
+                className="w-full h-14 rounded-2xl bg-brand-brown text-white font-bold font-cairo text-lg shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
               >
-                <div className="absolute inset-0 bg-gradient-to-tr from-brand-brown/5 to-transparent" />
-                <Download className="w-6 h-6 text-brand-brown transition-transform group-hover:scale-110 group-hover:rotate-6" />
-                <span className="relative z-10">{t("nav.download")}</span>
+                <Download className="w-5 h-5" />
+                <span>{t("nav.download")}</span>
               </Button>
               {isPartnerPage ? (
-                <Link
-                  to="/login"
-                  onClick={onClose}
-                  className="block w-full"
-                >
+                <Link to="/login" onClick={onClose} className="block w-full">
                   <Button
                     variant="outline"
-                    className="w-full h-16 rounded-2xl border-2 border-brand-brown/10 text-brand-brown font-bold font-cairo text-lg active:scale-[0.98] transition-all hover:bg-brand-brown/5 flex items-center justify-center gap-3"
+                    className="w-full h-14 rounded-2xl border-2 border-brand-brown/10 text-brand-brown font-bold font-cairo text-lg hover:bg-brand-brown/5"
                   >
-                    <LogIn
-                      className={cn("w-6 h-6", isRTL && "rotate-180")}
-                    />
-                    {t("nav.login")}
+                    <LogIn className={cn("w-5 h-5", isRTL && "rotate-180")} />
+                    <span className="ms-2">{t("nav.login")}</span>
                   </Button>
                 </Link>
               ) : (
-                <Link to="/partner" onClick={onClose} className="block w-full group">
+                <Link to="/partner" onClick={onClose} className="block w-full">
                   <Button
                     variant="outline"
-                    className="w-full h-16 rounded-2xl border-2 border-brand-brown/20 text-brand-brown font-bold font-cairo text-lg active:scale-[0.98] transition-all hover:border-brand-brown/40 hover:bg-brand-brown/5 flex items-center justify-center gap-3"
+                    className="w-full h-14 rounded-2xl border-2 border-brand-brown/10 text-brand-brown font-bold font-cairo text-lg hover:bg-brand-brown/5"
                   >
-                    <Users className="w-6 h-6 transition-transform group-hover:scale-110 group-hover:-rotate-6" />
-                    {t("nav.join")}
+                    <Users className="w-5 h-5" />
+                    <span className="ms-2">{t("nav.join")}</span>
                   </Button>
                 </Link>
               )}
-            </motion.div>
+            </div>
           </motion.div>
         </>
       )}
     </AnimatePresence>
   );
-};
+});
+
+MobileMenu.displayName = "MobileMenu";
