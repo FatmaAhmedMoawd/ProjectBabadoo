@@ -17,6 +17,7 @@ export const LoginPage: React.FC = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const checkCapsLock = (e: React.KeyboardEvent) => {
     if (e.getModifierState("CapsLock")) {
@@ -28,10 +29,14 @@ export const LoginPage: React.FC = () => {
 
   const validate = () => {
     const newErrors: { email?: string; password?: string } = {};
-    if (!email) {
+    const emailLower = email.toLowerCase().trim();
+    
+    if (!emailLower) {
       newErrors.email = isRTL ? "يرجى إدخال البريد الإلكتروني" : "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailLower)) {
       newErrors.email = isRTL ? "البريد الإلكتروني غير صحيح" : "Invalid email address";
+    } else if (!emailLower.endsWith("@gmail.com") && !emailLower.endsWith("@yahoo.com")) {
+      newErrors.email = isRTL ? "يجب استخدام @gmail.com أو @yahoo.com" : "Must use @gmail.com or @yahoo.com";
     }
     
     if (!password) {
@@ -46,12 +51,14 @@ export const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSuccessMessage("");
     if (!validate()) return;
 
     setIsLoading(true);
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsLoading(false);
+    setSuccessMessage(isRTL ? "تم تسجيل الدخول بنجاح! جاري التحويل..." : "Login successful! Redirecting...");
     console.log("Login successful", { email, password });
   };
 
@@ -208,6 +215,22 @@ export const LoginPage: React.FC = () => {
                 )}
               </AnimatePresence>
             </div>
+
+            <AnimatePresence>
+              {successMessage && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                  className="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center gap-3 text-green-700 font-bold font-cairo text-sm shadow-sm"
+                >
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                    <ShieldCheck className="w-5 h-5 text-white" />
+                  </div>
+                  {successMessage}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <Button
               type="submit"
