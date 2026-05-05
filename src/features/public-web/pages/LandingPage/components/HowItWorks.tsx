@@ -35,7 +35,7 @@ export const HowItWorks: React.FC = () => {
                   duration: 0.9, 
                   ease: [0.22, 1, 0.36, 1] 
                 }}
-                className="flex-1 max-w-[360px] px-6 py-10 rounded-[40px] border-2 border-brand-brown/5 hover:border-brand-brown/30 hover:bg-brand-light/20 transition-all duration-500 group"
+                className="flex-1 max-w-[360px] px-6 py-10 rounded-[40px] border border-[#6a7282]/40 shadow-md hover:border-brand-brown/30 hover:bg-brand-light/20 hover:shadow-2xl transition-all duration-500 group"
               >
                 <div className="mb-10 relative">
                   <div className="w-full aspect-square rounded-[48px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.08)] border-[12px] border-white transition-transform group-hover:scale-105 duration-700 group-hover:rotate-1">

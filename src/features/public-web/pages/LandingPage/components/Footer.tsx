@@ -156,7 +156,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="pt-12 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-6">
-          <p className="text-sm text-white/40" dir="ltr">© 2026 Babadoo. Everything Simply</p>
+          <p className="text-sm text-white/40" dir="ltr">© 2026 Babadoo</p>
           <div className="flex gap-8 text-xs font-medium text-white/30 tracking-widest uppercase">
             <span className="hover:text-[#D38842] cursor-pointer transition-colors tracking-tighter sm:tracking-widest">Premium Logistics</span>
             <span className="hover:text-[#D38842] cursor-pointer transition-colors tracking-tighter sm:tracking-widest">Fast Delivery</span>

@@ -12,12 +12,11 @@
 }
 
 @layer base {
-  html,
-  body {
-    @apply overflow-x-hidden;
+  html {
+    @apply overflow-x-hidden scroll-smooth;
   }
   body {
-    @apply font-sans bg-white text-gray-900;
+    @apply font-sans bg-white text-gray-900 m-0 p-0;
   }
 }
 

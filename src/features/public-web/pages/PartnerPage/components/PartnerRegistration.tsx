@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "@/shared/ui/Common";
-import { Upload, ChevronDown, Phone, Check } from "lucide-react";
+import { Upload, ChevronDown, Phone, Check, Utensils, ShoppingBag, UserCircle, Store, Coffee, Pizza, Home, ShoppingCart, Laptop, Pill, Heart, Flower2 } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
+import { AnimatePresence } from "framer-motion";
 
 import { useRTL } from "@/shared/hooks/useRTL";
 
@@ -10,6 +12,86 @@ export const PartnerRegistration: React.FC = () => {
   const { t } = useTranslation();
   const { isRTL } = useRTL();
   const [step, setStep] = useState(1);
+
+  // Custom Select Component
+  const CustomSelect = ({ 
+    label, 
+    name, 
+    value, 
+    options, 
+    onChange, 
+    placeholder,
+    icon: Icon
+  }: { 
+    label: string; 
+    name: string; 
+    value: string; 
+    options: { label: string; value: string; icon?: React.ReactNode }[]; 
+    onChange: (name: string, value: string) => void; 
+    placeholder: string;
+    icon?: any;
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const selectedOption = options.find(opt => opt.value === value);
+
+    return (
+      <div className="space-y-2 relative">
+        <label className="block font-bold text-sm text-gray-800">{label}</label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "w-full flex items-center justify-between border rounded-2xl p-4 bg-white transition-all duration-300 outline-none group shadow-sm hover:shadow-md",
+              isOpen ? "border-brand-brown ring-4 ring-brand-brown/5" : "border-gray-200"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              {Icon && <Icon className={cn("w-5 h-5", isOpen ? "text-brand-brown" : "text-gray-400")} />}
+              <span className={cn("font-medium", !selectedOption ? "text-gray-400" : "text-gray-900")}>
+                {selectedOption ? selectedOption.label : placeholder}
+              </span>
+            </div>
+            <ChevronDown className={cn("w-5 h-5 text-gray-400 transition-transform duration-300", isOpen && "rotate-180")} />
+          </button>
+          
+          <AnimatePresence>
+            {isOpen && (
+              <>
+                <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)} />
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 5, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  className="absolute left-0 right-0 z-[70] mt-2 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-[24px] shadow-2xl overflow-hidden py-2"
+                >
+                  {options.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => {
+                        onChange(name, opt.value);
+                        setIsOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-5 py-4 text-start transition-all duration-200 group/item relative",
+                        value === opt.value ? "bg-brand-brown/10 text-brand-brown" : "text-gray-700 hover:bg-gray-50"
+                      )}
+                    >
+                      {opt.icon && <span className="relative z-10">{opt.icon}</span>}
+                      <span className="font-bold font-cairo relative z-10">{opt.label}</span>
+                      {value === opt.value && <Check className="ms-auto w-5 h-5 text-brand-brown relative z-10" />}
+                      <div className="absolute inset-0 bg-brand-brown opacity-0 group-hover/item:opacity-[0.03] transition-opacity" />
+                    </button>
+                  ))}
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    );
+  };
 
   // Form State
   const [formData, setFormData] = useState({
@@ -198,84 +280,129 @@ export const PartnerRegistration: React.FC = () => {
                 animate={{ opacity: 1 }}
                 className="space-y-6 text-start"
               >
-                <div className="space-y-2">
-                  <label className="block font-bold text-sm">
+                <div className="space-y-4">
+                  <label className="block font-bold text-sm text-gray-800 px-1">
                     {t("partner.brandName")}
                   </label>
-                  <input
-                    type="text"
-                    name="brandName"
-                    value={formData.brandName}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    placeholder={t("partner.brandNamePlaceholder")}
-                    className={`w-full border rounded-lg p-3 outline-none focus:border-[#D38842] transition-colors ${errors.brandName ? "border-red-500 bg-red-50/5" : "border-gray-300"}`}
-                  />
-                  {errors.brandName && <p className="text-red-500 text-xs font-cairo mt-1 font-medium">{errors.brandName}</p>}
+                  <div className="relative group">
+                    <Store className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-brown transition-colors w-5 h-5" />
+                    <input
+                      type="text"
+                      name="brandName"
+                      value={formData.brandName}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      placeholder={t("partner.brandNamePlaceholder")}
+                      className={cn(
+                        "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                        errors.brandName 
+                          ? "border-red-200 bg-red-50/30 focus:border-red-400" 
+                          : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
+                      )}
+                    />
+                  </div>
+                  {errors.brandName && <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs font-cairo mt-1 font-medium px-1">{errors.brandName}</motion.p>}
                 </div>
+
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block font-bold text-sm">
+                  <div className="space-y-4">
+                    <label className="block font-bold text-sm text-gray-800 px-1">
                       {t("partner.firstName")}
                     </label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      onBlur={handleBlur}
-                      placeholder={t("partner.firstNamePlaceholder")}
-                      className={`w-full border rounded-lg p-3 outline-none focus:border-[#D38842] transition-colors ${errors.firstName ? "border-red-500 bg-red-50/5" : "border-gray-300"}`}
-                    />
-                    {errors.firstName && <p className="text-red-500 text-xs font-cairo mt-1 font-medium">{errors.firstName}</p>}
+                    <div className="relative group">
+                      <UserCircle className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-brown transition-colors w-5 h-5" />
+                      <input
+                        type="text"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        placeholder={t("partner.firstNamePlaceholder")}
+                        className={cn(
+                          "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                          errors.firstName 
+                            ? "border-red-200 bg-red-50/30 focus:border-red-400" 
+                            : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
+                        )}
+                      />
+                    </div>
+                    {errors.firstName && <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs font-cairo mt-1 font-medium px-1">{errors.firstName}</motion.p>}
                   </div>
-                  <div className="space-y-2">
-                    <label className="block font-bold text-sm">
+                  <div className="space-y-4">
+                    <label className="block font-bold text-sm text-gray-800 px-1">
                       {t("partner.lastName")}
                     </label>
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      onBlur={handleBlur}
-                      placeholder={t("partner.lastNamePlaceholder")}
-                      className={`w-full border rounded-lg p-3 outline-none focus:border-[#D38842] transition-colors ${errors.lastName ? "border-red-500 bg-red-50/5" : "border-gray-300"}`}
-                    />
-                    {errors.lastName && <p className="text-red-500 text-xs font-cairo mt-1 font-medium">{errors.lastName}</p>}
+                    <div className="relative group">
+                      <UserCircle className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-brown transition-colors w-5 h-5" />
+                      <input
+                        type="text"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        placeholder={t("partner.lastNamePlaceholder")}
+                        className={cn(
+                          "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                          errors.lastName 
+                            ? "border-red-200 bg-red-50/30 focus:border-red-400" 
+                            : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
+                        )}
+                      />
+                    </div>
+                    {errors.lastName && <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs font-cairo mt-1 font-medium px-1">{errors.lastName}</motion.p>}
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="block font-bold text-sm">
+
+                <div className="space-y-4">
+                  <label className="block font-bold text-sm text-gray-800 px-1">
                     {t("partner.email")}
                   </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    placeholder="example@gmail.com"
-                    className={`w-full border rounded-lg p-3 outline-none focus:border-[#D38842] transition-colors ${isRTL ? "text-right" : "text-left"} ${errors.email ? "border-red-500 bg-red-50/5" : "border-gray-300"}`}
-                    dir="ltr"
-                  />
-                  {errors.email && <p className="text-red-500 text-xs font-cairo mt-1 font-medium">{errors.email}</p>}
+                  <div className="relative group">
+                    <Check className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-brown transition-colors w-5 h-5" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      placeholder="example@gmail.com"
+                      className={cn(
+                        "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                        isRTL ? "text-right" : "text-left",
+                        errors.email 
+                          ? "border-red-200 bg-red-50/30 focus:border-red-400" 
+                          : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
+                      )}
+                      dir="ltr"
+                    />
+                  </div>
+                  {errors.email && <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs font-cairo mt-1 font-medium px-1">{errors.email}</motion.p>}
                 </div>
-                <div className="space-y-2">
-                  <label className="block font-bold text-sm">
+
+                <div className="space-y-4">
+                  <label className="block font-bold text-sm text-gray-800 px-1">
                     {t("partner.phone")}
                   </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    placeholder="01012345678"
-                    className={`w-full border rounded-lg p-3 outline-none focus:border-[#D38842] transition-colors ${isRTL ? "text-right" : "text-left"} ${errors.phone ? "border-red-500 bg-red-50/5" : "border-gray-300"}`}
-                    dir="ltr"
-                  />
-                  {errors.phone && <p className="text-red-500 text-xs font-cairo mt-1 font-medium leading-relaxed">{errors.phone}</p>}
+                  <div className="relative group">
+                    <Phone className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-brown transition-colors w-5 h-5" />
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      placeholder="01012345678"
+                      className={cn(
+                        "w-full border rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 shadow-sm",
+                        isRTL ? "text-right" : "text-left",
+                        errors.phone 
+                          ? "border-red-200 bg-red-50/30 focus:border-red-400" 
+                          : "border-gray-200 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5"
+                      )}
+                      dir="ltr"
+                    />
+                  </div>
+                  {errors.phone && <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs font-cairo mt-1 font-medium px-1 leading-relaxed">{errors.phone}</motion.p>}
                 </div>
 
                 <div className="pt-6 flex justify-center">
@@ -297,64 +424,48 @@ export const PartnerRegistration: React.FC = () => {
                 animate={{ opacity: 1 }}
                 className="space-y-6 text-start"
               >
-                <div className="space-y-2">
-                  <label className="block font-bold text-sm text-gray-800">
-                    {t("partner.bizType")}
-                  </label>
-                  <div className="relative">
-                    <select
-                      name="bizType"
-                      value={formData.bizType}
-                      onChange={handleInputChange}
-                      className="w-full border border-gray-300 rounded-lg p-3.5 outline-none focus:border-[#D38842] appearance-none bg-white text-gray-800 font-medium"
-                    >
-                      <option value="">{t("partner.bizTypeSelect")}</option>
-                      <option value="restaurant">مطعم</option>
-                      <option value="shops">محلات</option>
-                    </select>
-                    <ChevronDown className="absolute end-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
-                  </div>
-                </div>
+                <CustomSelect
+                  label={t("partner.bizType")}
+                  name="bizType"
+                  value={formData.bizType}
+                  placeholder={t("partner.bizTypeSelect")}
+                  icon={Store}
+                  options={[
+                    { label: "مطعم", value: "restaurant", icon: <Utensils className="w-5 h-5 text-orange-500" /> },
+                    { label: "محلات", value: "shops", icon: <ShoppingBag className="w-5 h-5 text-blue-500" /> },
+                  ]}
+                  onChange={(name, value) => setFormData(prev => ({ ...prev, [name]: value }))}
+                />
 
                 {formData.bizType && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
-                    className="space-y-2"
+                    className="space-y-2 overflow-visible"
                   >
-                    <label className="block font-bold text-sm text-gray-800">
-                      نوع المتجر
-                    </label>
-                    <div className="relative">
-                      <select
-                        name="storeType"
-                        value={formData.storeType}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 rounded-lg p-3.5 outline-none focus:border-[#D38842] appearance-none bg-white text-gray-800 font-medium"
-                      >
-                        <option value="">اختر نوع المتجر</option>
-                        {formData.bizType === "restaurant" ? (
-                          <>
-                            <option value="regular">مطعم عادي</option>
-                            <option value="home">مطبخ منزلي</option>
-                            <option value="street">طعام شارع</option>
-                          </>
-                        ) : (
-                          <>
-                            <option value="electronics">إلكترونيات</option>
-                            <option value="pharmacy">صيدلية</option>
-                            <option value="pets">حيوانات أليفة</option>
-                            <option value="flowers">زهور</option>
-                          </>
-                        )}
-                      </select>
-                      <ChevronDown className="absolute end-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
-                    </div>
+                    <CustomSelect
+                      label="نوع المتجر"
+                      name="storeType"
+                      value={formData.storeType}
+                      placeholder="اختر نوع المتجر"
+                      icon={ShoppingCart}
+                      options={formData.bizType === "restaurant" ? [
+                        { label: "مطعم عادي", value: "regular", icon: <Pizza className="w-5 h-5 text-red-500" /> },
+                        { label: "مطبخ منزلي", value: "home", icon: <Home className="w-5 h-5 text-emerald-500" /> },
+                        { label: "طعام شارع", value: "street", icon: <Coffee className="w-5 h-5 text-amber-600" /> },
+                      ] : [
+                        { label: "إلكترونيات", value: "electronics", icon: <Laptop className="w-5 h-5 text-indigo-500" /> },
+                        { label: "صيدلية", value: "pharmacy", icon: <Pill className="w-5 h-5 text-rose-500" /> },
+                        { label: "حيوانات أليفة", value: "pets", icon: <Heart className="w-5 h-5 text-pink-500" /> },
+                        { label: "زهور", value: "flowers", icon: <Flower2 className="w-5 h-5 text-fuchsia-500" /> },
+                      ]}
+                      onChange={(name, value) => setFormData(prev => ({ ...prev, [name]: value }))}
+                    />
                   </motion.div>
                 )}
 
-                <div className="space-y-2">
-                  <label className="block font-bold text-sm text-gray-800">
+                <div className="space-y-4">
+                  <label className="block font-bold text-sm text-gray-800 px-1">
                     {t("partner.branchCount")} (بحد أقصى 5)
                   </label>
                   <input
@@ -370,42 +481,39 @@ export const PartnerRegistration: React.FC = () => {
                     min="1"
                     max="5"
                     placeholder="1"
-                    className="w-full border border-gray-300 rounded-lg p-3.5 outline-none focus:border-[#D38842]"
+                    className="w-full border border-gray-200 rounded-[20px] p-4 outline-none focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5 transition-all duration-300 bg-white shadow-sm"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="block font-bold text-sm text-gray-800">
-                    {t("partner.role")}
-                  </label>
-                  <div className="relative">
-                    <select
-                      name="role"
-                      value={formData.role}
-                      onChange={handleInputChange}
-                      className="w-full border border-gray-300 rounded-lg p-3.5 outline-none focus:border-[#D38842] appearance-none bg-white text-gray-800 font-medium"
-                    >
-                      <option value="">{t("partner.roleSelect")}</option>
-                      <option value="owner">المالك أو الشريك</option>
-                      <option value="manager">المدير أو الممثل القانوني</option>
-                    </select>
-                    <ChevronDown className="absolute end-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
-                  </div>
-                </div>
+                <CustomSelect
+                  label={t("partner.role")}
+                  name="role"
+                  value={formData.role}
+                  placeholder={t("partner.roleSelect")}
+                  icon={UserCircle}
+                  options={[
+                    { label: "المالك أو الشريك", value: "owner", icon: <Check className="w-4 h-4" /> },
+                    { label: "المدير أو الممثل القانوني", value: "manager", icon: <Check className="w-4 h-4" /> },
+                  ]}
+                  onChange={(name, value) => setFormData(prev => ({ ...prev, [name]: value }))}
+                />
 
                 <div className="space-y-2">
                   <label className="block font-bold text-sm text-gray-800">
                     {t("partner.bizPhone")}
                   </label>
-                  <div className="relative">
-                    <Phone className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
+                  <div className="relative group">
+                    <Phone className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-brown transition-colors w-5 h-5 pointer-events-none" />
                     <input
                       type="tel"
                       name="bizPhone"
                       value={formData.bizPhone}
                       onChange={handleInputChange}
                       placeholder={t("partner.bizPhonePlaceholder")}
-                      className={`w-full border border-gray-300 rounded-lg p-3.5 outline-none focus:border-[#D38842] ${isRTL ? "pr-11 text-right" : "pl-11 text-left"}`}
+                      className={cn(
+                        "w-full border border-gray-200 rounded-[20px] p-4 ps-12 outline-none transition-all duration-300 bg-white focus:border-brand-brown focus:ring-4 focus:ring-brand-brown/5 shadow-sm",
+                        isRTL ? "text-right" : "text-left"
+                      )}
                       dir="ltr"
                     />
                   </div>

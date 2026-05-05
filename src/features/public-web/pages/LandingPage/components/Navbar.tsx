@@ -9,9 +9,14 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 interface NavbarProps {
   isScrolled: boolean;
   onMenuOpen: () => void;
+  isMenuOpen: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onMenuOpen }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  isScrolled, 
+  onMenuOpen, 
+  isMenuOpen 
+}) => {
   const { t } = useTranslation();
   const location = useLocation();
   const isPartnerPage = location.pathname === "/partner";
@@ -57,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onMenuOpen }) => {
       <div className="flex items-center gap-4">
         <LanguageSwitcher className="hidden lg:flex" />
         {isPartnerPage ? (
-          <Link to="/app/login">
+          <Link to="/login">
             <Button
               variant="outline"
               size="sm"
@@ -84,9 +89,26 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled, onMenuOpen }) => {
           <button
             aria-label={t("nav.openMenu", "Open menu")}
             onClick={onMenuOpen}
-            className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl border border-white/20 active:scale-90 transition-all shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark"
+            className="w-10 h-10 sm:w-12 sm:h-12 flex flex-col items-center justify-center text-white bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl border border-white/20 active:scale-90 transition-all shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark gap-[4px] px-0"
           >
-            <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+            <span 
+              className={cn(
+                "w-5 sm:w-6 h-[2px] bg-white transition-all duration-300 rounded-full",
+                isMenuOpen && "rotate-45 translate-y-[6px]"
+              )} 
+            />
+            <span 
+              className={cn(
+                "w-5 sm:w-6 h-[2px] bg-white transition-all duration-300 rounded-full",
+                isMenuOpen && "opacity-0"
+              )} 
+            />
+            <span 
+              className={cn(
+                "w-5 sm:w-6 h-[2px] bg-white transition-all duration-300 rounded-full",
+                isMenuOpen && "-rotate-45 -translate-y-[6px]"
+              )} 
+            />
           </button>
         </div>
       </div>

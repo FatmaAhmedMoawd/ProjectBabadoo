@@ -7,7 +7,7 @@ import { AppRouter } from './app/providers/AppRouter';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       <AppRouter />
     </div>
   );

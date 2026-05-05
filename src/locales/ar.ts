@@ -170,7 +170,7 @@ export const ar = {
     contactSupport: "اتصل بالدعم",
   },
   footer: {
-    rights: "© 2026 Babadoo. Everything Simply",
+    rights: "© 2026 Babadoo",
     contact: "تواصل معنا",
     company: "الشركة",
     about: "عن الشركة",

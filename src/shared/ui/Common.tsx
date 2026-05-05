@@ -1,13 +1,9 @@
 import { cn } from "@/shared/lib/utils";
 import React from "react";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   variant?: "primary" | "outline" | "ghost" | "secondary";
   size?: "sm" | "md" | "lg";
-  className?: string;
-  children?: React.ReactNode;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  disabled?: boolean;
 }
 
 export function Button({

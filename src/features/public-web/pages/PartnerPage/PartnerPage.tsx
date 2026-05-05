@@ -25,8 +25,12 @@ const PartnerPage: React.FC = () => {
   }, []);
 
   return (
-    <div dir={isRTL ? 'rtl' : 'ltr'} className="min-h-screen bg-white font-sans text-brand-dark overflow-x-hidden">
-      <Navbar isScrolled={isScrolled} onMenuOpen={() => setIsMobileMenuOpen(true)} />
+    <div dir={isRTL ? 'rtl' : 'ltr'} className="min-h-screen bg-white font-sans text-brand-dark">
+      <Navbar 
+        isScrolled={isScrolled} 
+        onMenuOpen={() => setIsMobileMenuOpen(true)} 
+        isMenuOpen={isMobileMenuOpen}
+      />
       <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
       
       <main>

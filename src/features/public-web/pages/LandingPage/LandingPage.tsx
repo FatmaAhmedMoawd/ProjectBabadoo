@@ -38,11 +38,15 @@ export default function LandingPage() {
   }, [isMenuOpen]);
 
   return (
-    <div className="flex flex-col min-h-screen font-sans selection:bg-brand-brown/30 overflow-x-hidden">
+    <div className="flex flex-col min-h-screen font-sans selection:bg-brand-brown/30">
       {/* Navigation Layer */}
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
-      <Navbar isScrolled={isScrolled} onMenuOpen={() => setIsMenuOpen(true)} />
+      <Navbar 
+        isScrolled={isScrolled} 
+        onMenuOpen={() => setIsMenuOpen(true)} 
+        isMenuOpen={isMenuOpen}
+      />
 
       {/* Main Content Sections */}
       <main>

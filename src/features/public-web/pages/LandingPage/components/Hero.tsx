@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
+import { Smartphone, Users } from "lucide-react";
 import { Button } from "@/shared/ui/Common";
 import { cn } from "@/shared/lib/utils";
 
@@ -75,33 +76,50 @@ export const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 1 }}
-          className="flex flex-col sm:flex-row gap-4 mt-2 lg:mt-8 w-full justify-center order-3 lg:col-start-1 lg:row-start-2 lg:self-start lg:mx-auto"
+          className="flex flex-col sm:flex-row gap-5 mt-2 lg:mt-8 w-full justify-center order-3 lg:col-start-1 lg:row-start-2 lg:self-start lg:mx-auto px-6 sm:px-0"
         >
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full sm:w-auto"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full sm:w-auto group"
           >
             <Button
               variant="secondary"
               size="lg"
-              className="rounded-md shadow-lg px-8 py-5 text-base md:text-lg font-bold font-cairo bg-white text-brand-dark border-none w-full justify-center"
+              className="relative overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] px-10 py-6 text-base md:text-xl font-bold font-cairo bg-white text-brand-dark border-none w-full justify-center gap-3 group-hover:shadow-[0_20px_50px_rgba(211,136,66,0.2)] transition-all duration-500"
             >
-              {t("hero.ctaPrimary")}
+              <div className="absolute inset-0 bg-gradient-to-tr from-brand-brown/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <Smartphone className="w-6 h-6 text-brand-brown transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6" />
+              <span className="relative z-10">{t("hero.ctaPrimary")}</span>
+              
+              {/* Subtle Animated Pulse */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.1, 0.3, 0.1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute inset-0 bg-brand-brown rounded-full pointer-events-none"
+              />
             </Button>
           </motion.div>
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full sm:w-auto"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full sm:w-auto group"
           >
-            <Link to="/partner">
+            <Link to="/partner" className="block w-full">
               <Button
                 variant="outline"
                 size="lg"
-                className="rounded-md border border-white hover:bg-white/10 px-8 py-5 text-base md:text-lg font-bold font-cairo w-full text-white justify-center"
+                className="rounded-2xl border-2 border-white/30 backdrop-blur-md hover:border-white/80 hover:bg-white/10 px-10 py-6 text-base md:text-xl font-bold font-cairo w-full text-white justify-center gap-3 transition-all duration-500 shadow-lg"
               >
-                {t("hero.ctaSecondary")}
+                <Users className="w-6 h-6 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6" />
+                <span className="relative z-10">{t("hero.ctaSecondary")}</span>
               </Button>
             </Link>
           </motion.div>

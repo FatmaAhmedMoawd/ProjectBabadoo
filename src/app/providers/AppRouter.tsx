@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from '@/features/public-web/pages/LandingPage/LandingPage';
 import PartnerPage from '@/features/public-web/pages/PartnerPage/PartnerPage';
+import { LoginPage } from '@/features/public-web/pages/AuthPage/LoginPage';
 
 // Placeholder components for the other domains
 const BrandDashboardLayout = () => <div className="p-8 text-start" dir="rtl"><h1>لوحة تحكم البراند (app.babbadoo.app)</h1><p>يتطلب تسجيل الدخول</p></div>;
@@ -13,6 +14,7 @@ export const AppRouter = () => {
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/partner" element={<PartnerPage />} />
+        <Route path="/login" element={<LoginPage />} />
         
         {/* Brand Routes (Simulating subdomain via path for dev preview) */}
         <Route path="/app/*" element={<BrandDashboardLayout />} />

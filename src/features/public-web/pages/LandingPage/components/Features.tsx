@@ -35,7 +35,7 @@ export const Features: React.FC = () => {
                   duration: 0.9,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="relative rounded-[40px] bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-[#D38842]/5 transition-all duration-300 group cursor-default"
+                className="relative rounded-[40px] bg-white border border-[#6a7282]/40 shadow-md hover:shadow-2xl hover:shadow-brand-brown/5 transition-all duration-500 group cursor-default"
               >
                 <div className="p-10 h-full flex flex-col items-center relative overflow-hidden">
                   <div className="w-20 h-20 bg-gray-50 text-gray-700 rounded-3xl flex items-center justify-center mx-auto mb-10 group-hover:bg-[#D38842]/10 group-hover:text-[#D38842] group-hover:scale-110 transition-all duration-500">
@@ -83,7 +83,7 @@ export const Features: React.FC = () => {
                   duration: 0.9,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="relative rounded-[40px] bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-[#D38842]/5 transition-all duration-300 group cursor-default"
+                className="relative rounded-[40px] bg-white border border-[#6a7282]/40 shadow-md hover:shadow-2xl hover:shadow-brand-brown/5 transition-all duration-500 group cursor-default"
               >
                 <div className="p-10 h-full flex flex-col items-center relative overflow-hidden">
                   <div className="w-16 h-16 bg-gray-50 text-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-8 transition-all group-hover:rotate-12 group-hover:bg-[#D38842]/10 group-hover:text-[#D38842]">

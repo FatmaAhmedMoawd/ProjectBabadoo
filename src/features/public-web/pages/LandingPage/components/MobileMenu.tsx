@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useLocation } from "react-router-dom";
-import { X, ChevronRight, Download, LogIn } from "lucide-react";
+import { X, ChevronRight, Download, LogIn, Users } from "lucide-react";
 import { Button, Logo } from "@/shared/ui/Common";
 import { cn } from "@/shared/lib/utils";
 import { useRTL } from "@/shared/hooks/useRTL";
@@ -63,9 +63,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               <button
                 onClick={onClose}
                 aria-label={t("nav.closeMenu", "Close menu")}
-                className="w-10 h-10 flex items-center justify-center text-brand-dark bg-gray-100 hover:bg-gray-200 rounded-xl transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-brown focus-visible:ring-offset-2 shrink-0"
+                className="w-10 h-10 flex flex-col items-center justify-center text-brand-dark bg-gray-100 hover:bg-gray-200 rounded-xl transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-brown focus-visible:ring-offset-2 shrink-0 gap-[4px]"
               >
-                <X className="w-5 h-5" />
+                <span className="w-5 h-[2px] bg-brand-dark rotate-45 translate-y-[3px] rounded-full" />
+                <span className="w-5 h-[2px] bg-brand-dark -rotate-45 -translate-y-[3px] rounded-full" />
               </button>
               <Logo
                 variant="horizontal"
@@ -113,33 +114,35 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             >
               <Button
                 variant="secondary"
-                className="w-full h-14 rounded-2xl bg-brand-brown text-white font-bold font-cairo text-lg shadow-xl shadow-brand-brown/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 hover:bg-[#8B4513] hover:text-white border-none"
+                className="w-full h-16 rounded-2xl bg-white border border-gray-200 text-brand-dark font-bold font-cairo text-lg shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-3 hover:bg-gray-50 group overflow-hidden relative"
               >
-                <Download className="w-5 h-5 mb-1" />
-                {t("nav.download")}
+                <div className="absolute inset-0 bg-gradient-to-tr from-brand-brown/5 to-transparent" />
+                <Download className="w-6 h-6 text-brand-brown transition-transform group-hover:scale-110 group-hover:rotate-6" />
+                <span className="relative z-10">{t("nav.download")}</span>
               </Button>
               {isPartnerPage ? (
                 <Link
-                  to="/app/login"
+                  to="/login"
                   onClick={onClose}
                   className="block w-full"
                 >
                   <Button
                     variant="outline"
-                    className="w-full h-14 rounded-2xl border-2 border-brand-brown/10 text-brand-brown font-bold font-cairo text-lg active:scale-[0.98] transition-all hover:bg-brand-brown/5 flex items-center justify-center gap-2"
+                    className="w-full h-16 rounded-2xl border-2 border-brand-brown/10 text-brand-brown font-bold font-cairo text-lg active:scale-[0.98] transition-all hover:bg-brand-brown/5 flex items-center justify-center gap-3"
                   >
                     <LogIn
-                      className={cn("w-5 h-5 mb-1", isRTL && "rotate-180")}
+                      className={cn("w-6 h-6", isRTL && "rotate-180")}
                     />
                     {t("nav.login")}
                   </Button>
                 </Link>
               ) : (
-                <Link to="/partner" onClick={onClose} className="block w-full">
+                <Link to="/partner" onClick={onClose} className="block w-full group">
                   <Button
                     variant="outline"
-                    className="w-full h-14 rounded-2xl border-2 border-brand-brown/10 text-brand-brown font-bold font-cairo text-lg active:scale-[0.98] transition-all hover:bg-brand-brown/5"
+                    className="w-full h-16 rounded-2xl border-2 border-brand-brown/20 text-brand-brown font-bold font-cairo text-lg active:scale-[0.98] transition-all hover:border-brand-brown/40 hover:bg-brand-brown/5 flex items-center justify-center gap-3"
                   >
+                    <Users className="w-6 h-6 transition-transform group-hover:scale-110 group-hover:-rotate-6" />
                     {t("nav.join")}
                   </Button>
                 </Link>

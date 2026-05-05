@@ -31,7 +31,11 @@ export const PartnerFAQ: React.FC = () => {
           {faqs.map((faq, idx) => (
             <div
               key={idx}
-              className="relative rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+              className={`relative rounded-3xl transition-all duration-500 overflow-hidden border ${
+                openIndex === idx
+                  ? "bg-gray-100 border-gray-200 shadow-md"
+                  : "bg-white border-gray-100 shadow-sm hover:shadow-md"
+              }`}
             >
               <div className="">
                 <button
