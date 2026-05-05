@@ -11,9 +11,70 @@ const HERO_IMAGES = [
   "https://i.postimg.cc/vBM9FHks/Browse-Reserve.png",
 ];
 
+const FloatingDecorations: React.FC = () => {
+  return (
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      {/* Clusters of shapes to mimic the Sololearn screenshot */}
+      {[
+        // Left Cluster
+        { top: '25%', left: '8%', size: 14, type: 'plus', color: 'rgba(211, 136, 66, 0.4)', delay: 0 },
+        { top: '32%', left: '12%', size: 6, type: 'dot', color: 'rgba(211, 136, 66, 0.3)', delay: 1 },
+        { top: '28%', left: '5%', size: 4, type: 'dot', color: 'rgba(255, 255, 255, 0.2)', delay: 0.5 },
+        { top: '40%', left: '10%', size: 12, type: 'plus', color: 'rgba(255, 255, 255, 0.2)', delay: 2 },
+        
+        // Right Cluster
+        { top: '20%', left: '88%', size: 16, type: 'plus', color: 'rgba(211, 136, 66, 0.4)', delay: 1.5 },
+        { top: '15%', left: '92%', size: 5, type: 'dot', color: 'rgba(255, 255, 255, 0.2)', delay: 0.2 },
+        { top: '28%', left: '90%', size: 10, type: 'plus', color: 'rgba(255, 255, 255, 0.2)', delay: 2.5 },
+        { top: '35%', left: '85%', size: 6, type: 'dot', color: 'rgba(211, 136, 66, 0.3)', delay: 0.8 },
+
+        // Center Scattered
+        { top: '10%', left: '50%', size: 12, type: 'plus', color: 'rgba(255, 255, 255, 0.1)', delay: 3 },
+        { top: '75%', left: '20%', size: 8, type: 'plus', color: 'rgba(255, 255, 255, 0.15)', delay: 1 },
+        { top: '80%', left: '75%', size: 6, type: 'dot', color: 'rgba(211, 136, 66, 0.2)', delay: 0 },
+      ].map((item, i) => (
+        <motion.div
+          key={`decor-${i}`}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ 
+            opacity: [item.type === 'plus' ? 0.2 : 0.1, item.type === 'plus' ? 0.5 : 0.4, item.type === 'plus' ? 0.2 : 0.1], 
+            scale: [1, 1.1, 1],
+            y: [0, -15, 0],
+            rotate: item.type === 'plus' ? [0, 10, 0] : 0
+          }}
+          transition={{ 
+            duration: 5 + i % 3, 
+            repeat: Infinity, 
+            delay: item.delay,
+            ease: "easeInOut" 
+          }}
+          style={{ 
+            position: 'absolute', 
+            top: item.top, 
+            left: item.left,
+            width: item.type === 'plus' ? 'auto' : item.size,
+            height: item.type === 'plus' ? 'auto' : item.size,
+            borderRadius: item.type === 'dot' ? '50%' : '0',
+            backgroundColor: item.type === 'dot' ? item.color : 'transparent',
+            color: item.type === 'plus' ? item.color : 'transparent'
+          }}
+        >
+          {item.type === 'plus' && (
+            <svg width={item.size} height={item.size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 const AnimatedWaves: React.FC = () => {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <FloatingDecorations />
       <svg
         className="absolute bottom-0 left-0 w-[200%] h-[40%] transform translate-z-0 opacity-10"
         viewBox="0 0 1000 100"
