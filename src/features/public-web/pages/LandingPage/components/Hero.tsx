@@ -1,0 +1,177 @@
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "motion/react";
+import { Link } from "react-router-dom";
+import { Button } from "@/shared/ui/Common";
+import { cn } from "@/shared/lib/utils";
+
+const HERO_IMAGES = [
+  "https://i.postimg.cc/0yM7747k/hero-2.png",
+  "https://i.postimg.cc/vBM9FHks/Browse-Reserve.png",
+];
+
+export const Hero: React.FC = () => {
+  const { t } = useTranslation();
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="relative min-h-[100svh] flex items-center pt-48 md:pt-32 pb-20 overflow-hidden bg-brand-brown">
+      <div className="container mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-x-16 items-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="text-white space-y-10 order-1 lg:col-start-1 w-full text-center flex flex-col items-center"
+        >
+          <div className="space-y-6 flex flex-col items-center w-full">
+            <motion.h1 className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.5] md:leading-[1.3] tracking-tight text-center font-cairo w-full max-w-[100vw] overflow-hidden px-4 md:px-2">
+              <div className="text-center w-full drop-shadow-xl whitespace-normal break-words">
+                <motion.span
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="inline-block animate-text-gradient bg-clip-text text-transparent mr-2 pb-2"
+                >
+                  {t("hero.titleAnimated")}
+                </motion.span>
+                <span className="text-white"> {t("hero.titleStatic")}</span>
+              </div>
+            </motion.h1>
+
+            <div className="flex flex-col items-center">
+              {[{ text: t("hero.subtitle"), delay: 0.1 }].map((line, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{
+                    delay: 0.2 + line.delay,
+                    duration: 1.2,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="block text-center whitespace-normal text-white text-base md:text-xl lg:mt-8 px-8 md:px-0 max-w-2xl font-medium tracking-wide leading-[1.8] md:leading-[1.8] text-white/90 mx-auto"
+                >
+                  {line.text}
+                </motion.span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 1 }}
+          className="flex flex-col sm:flex-row gap-4 mt-2 lg:mt-8 w-full justify-center order-3 lg:col-start-1 lg:row-start-2 lg:self-start lg:mx-auto"
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
+          >
+            <Button
+              variant="secondary"
+              size="lg"
+              className="rounded-md shadow-lg px-8 py-5 text-base md:text-lg font-bold font-cairo bg-white text-brand-dark border-none w-full justify-center"
+            >
+              {t("hero.ctaPrimary")}
+            </Button>
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
+          >
+            <Link to="/partner">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-md border border-white hover:bg-white/10 px-8 py-5 text-base md:text-lg font-bold font-cairo w-full text-white justify-center"
+              >
+                {t("hero.ctaSecondary")}
+              </Button>
+            </Link>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "circOut" }}
+          className="relative perspective-lg order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 w-full mt-6 lg:mt-0"
+        >
+          <motion.div
+            animate={{
+              y: [0, -12, 0],
+              rotate: [0, 0.5, 0],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="relative"
+          >
+            <div className="relative aspect-[4/3] overflow-hidden z-10">
+              <AnimatePresence initial={false}>
+                <motion.img
+                  key={currentImage}
+                  src={HERO_IMAGES[currentImage]}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full object-contain"
+                  referrerPolicy="no-referrer"
+                  alt="Babbadoo app preview screenshot"
+                />
+              </AnimatePresence>
+            </div>
+
+            {/* Slider Indicators */}
+            <div className="flex justify-center gap-3 mt-6">
+              {HERO_IMAGES.map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={false}
+                  animate={{
+                    width: currentImage === i ? 32 : 8,
+                    opacity: currentImage === i ? 1 : 0.4,
+                  }}
+                  className={cn(
+                    "h-2 rounded-full bg-white transition-all duration-300",
+                  )}
+                />
+              ))}
+            </div>
+
+            {/* Text under image */}
+            <motion.div
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="mt-8 md:mt-12 text-center"
+            >
+              <div className="text-3xl md:text-4xl font-bold text-white leading-snug font-cairo tracking-tight">
+                {t("hero.discover")}
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};

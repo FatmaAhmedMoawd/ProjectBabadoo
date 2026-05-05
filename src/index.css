@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-cairo: "Cairo", sans-serif;
+
+  --color-brand-brown: #854d0e;
+  --color-brand-light: #f7f1e7;
+  --color-brand-dark: #3d2b1f;
+}
+
+@layer base {
+  html,
+  body {
+    @apply overflow-x-hidden;
+  }
+  body {
+    @apply font-sans bg-white text-gray-900;
+  }
+}
+
+@layer utilities {
+  .animate-text-gradient {
+    background: linear-gradient(to right, #ffffff, #f6ad55, #ffffff, #f6ad55);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: text-gradient 5s linear infinite;
+  }
+
+  @keyframes text-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .perspective-lg {
+    perspective: 1000px;
+  }
+}
