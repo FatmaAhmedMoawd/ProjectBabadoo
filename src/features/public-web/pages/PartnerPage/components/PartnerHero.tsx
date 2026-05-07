@@ -15,7 +15,7 @@ export const PartnerHero: React.FC = () => {
           backgroundImage: "url(https://i.postimg.cc/SQG0pT2R/hero-image.png)",
         }}
       />
-      <div className="absolute inset-0 z-10 bg-[#1A1A1A]/80 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 z-10 bg-black/5" />
 
       <div className="container mx-auto px-6 md:px-12 relative z-20 flex flex-col items-center text-center">
         <motion.div

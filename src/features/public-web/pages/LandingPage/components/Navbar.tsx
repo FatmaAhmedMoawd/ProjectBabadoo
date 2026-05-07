@@ -64,9 +64,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         {isPartnerPage ? (
           <Link to="/login">
             <Button
-              variant="outline"
+              variant="primary"
               size="sm"
-              className="hidden sm:inline-flex rounded-md px-6 border-brand-dark/20 text-brand-dark hover:bg-brand-dark hover:text-white transition-all bg-white font-bold"
+              className="hidden sm:inline-flex rounded-lg px-8 bg-[#D38842] text-white hover:bg-[#b07032] border-none font-bold transition-all shadow-lg shadow-[#D38842]/20"
             >
               {t("nav.login")}
             </Button>

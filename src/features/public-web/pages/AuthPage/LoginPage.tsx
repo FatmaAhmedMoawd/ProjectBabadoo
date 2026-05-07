@@ -235,7 +235,7 @@ export const LoginPage: React.FC = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-16 rounded-[20px] bg-brand-brown text-white font-black text-xl shadow-xl shadow-brand-brown/20 transition-all active:scale-[0.98] group overflow-hidden relative border-none"
+              className="w-full h-16 rounded-[20px] bg-[#D38842] text-white font-black text-xl shadow-xl shadow-[#D38842]/20 transition-all active:scale-[0.98] group overflow-hidden relative border-none"
             >
               <span className={cn("relative z-10 flex items-center justify-center gap-2", isLoading && "opacity-0")}>
                 {isRTL ? "تسجيل الدخول" : "Sign In"}
